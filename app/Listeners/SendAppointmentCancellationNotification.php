@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Handlers\Events;
+namespace App\Listeners;
 
-use App\Events\AppointmentWasConfirmed;
+use App\Events\AppointmentWasCanceled;
 use App\TransMail;
 use Fenos\Notifynder\Facades\Notifynder;
 
-class SendAppointmentConfirmationNotification
+class SendAppointmentCancellationNotification
 {
     private $transmail;
 
@@ -22,15 +22,15 @@ class SendAppointmentConfirmationNotification
      *
      * @return void
      */
-    public function handle(AppointmentWasConfirmed $event)
+    public function handle(AppointmentWasCanceled $event)
     {
-        logger()->info('Handle AppointmentWasConfirmed.SendBookingNotification()');
+        logger()->info(__METHOD__);
 
         $code = $event->appointment->code;
         $date = $event->appointment->start_at->toDateString();
         $businessName = $event->appointment->business->name;
 
-        Notifynder::category('appointment.confirm')
+        Notifynder::category('appointment.cancel')
                    ->from('App\Models\User', $event->user->id)
                    ->to('Timegridio\Concierge\Models\Business', $event->appointment->business->id)
                    ->url('http://localhost')
@@ -51,8 +51,9 @@ class SendAppointmentConfirmationNotification
             'email' => $event->appointment->contact->email,
         ];
         $this->transmail->locale($event->appointment->business->locale)
-                        ->template('appointments.user._confirmed')
-                        ->subject('user.appointment.confirmed.subject', ['business' => $event->appointment->business->name])
+                        ->timezone($event->user->pref('timezone'))
+                        ->template('appointments.user._canceled')
+                        ->subject('user.appointment.canceled.subject', ['business' => $event->appointment->business->name])
                         ->send($header, $params);
     }
 }

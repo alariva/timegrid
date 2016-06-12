@@ -31,6 +31,16 @@ class TransMail
     /**
      * @var string
      */
+    protected $timezone = null;
+
+    /**
+     * @var string
+     */
+    protected $revertTimezone = null;
+
+    /**
+     * @var string
+     */
     protected $subjectKey = '';
 
     /**
@@ -99,6 +109,27 @@ class TransMail
         return $this;
     }
 
+    public function timezone($timezone)
+    {
+        $this->revertTimezone = session()->get('timezone');
+
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function switchTimezone($timezone)
+    {
+        if ($timezone !== null && $timezone != '') {
+            $this->revertTimezone = session()->get('timezone');
+
+            session()->set('timezone', $timezone);
+            logger()->info("Switching timezone to $timezone for session");
+        }
+
+        return $this;
+    }
+
     /**
      * Set the template view path key.
      *
@@ -141,6 +172,7 @@ class TransMail
     public function send(array $header, array $params)
     {
         $this->switchLocale($this->locale);
+        $this->switchTimezone($this->timezone);
 
         Mail::send($this->getViewKey(), $params, function ($mail) use ($header) {
             $mail->to($header['email'], $header['name'])
@@ -148,6 +180,7 @@ class TransMail
         });
 
         $this->switchLocale($this->revertLocale);
+        $this->switchTimezone($this->revertTimezone);
     }
 
     /////////////
@@ -159,17 +192,15 @@ class TransMail
      *
      * @param string $posixLocale
      *
-     * @return void
+     * @return $this
      */
     protected function switchLocale($posixLocale)
     {
         if (function_exists($this->localeSwitchFunction)) {
             call_user_func($this->localeSwitchFunction, $posixLocale);
-
-            return $this;
         }
 
-        return false;
+        return $this;
     }
 
     /**

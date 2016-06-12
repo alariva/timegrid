@@ -80,7 +80,7 @@ Route::group(['prefix' => 'auth', 'middleware' => 'web', 'auth', 'as' => 'auth']
 // GUEST CONTEXT //
 ///////////////////
 
-Route::group(['middleware' => 'web', 'auth'], function () {
+Route::group(['middleware' => 'web'], function () {
 
     ///////////////////////////
     // PRIVATE HOME / WIZARD //
@@ -432,6 +432,10 @@ Route::group(['prefix' => '{business}', 'middleware' => ['web', 'auth']], functi
             Route::post('', [
                 'as'   => 'manager.business.vacancy.store',
                 'uses' => 'BusinessVacancyController@store',
+            ]);
+            Route::post('update', [
+                'as'   => 'manager.business.vacancy.update',
+                'uses' => 'BusinessVacancyController@update',
             ]);
         });
 
