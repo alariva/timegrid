@@ -12,9 +12,7 @@ timegrid
 [![Current Beta](https://img.shields.io/badge/dev--alpha-5.0-orange.svg?style=flat-square)](http://demo.timegrid.io/)
 [![License](https://img.shields.io/:license-AGPL--3.0-blue.svg?style=flat-square)](http://www.gnu.org/licenses/agpl-3.0.txt)
 
-> Online appointments for freelancers and businesses made easy.
-
-**Timegrid** helps contractors and customers to find the perfect meeting time through *online appointments*.
+> **Timegrid** helps contractors and customers to find the perfect meeting time through *online appointments*.
 
 Built with the [**Laravel 5.2**](http://laravel.com/docs/5.2) framework for [**PHP**](http://php.net/).
 
@@ -32,41 +30,40 @@ Timegrid uses [Concierge package](https://github.com/timegridio/concierge) for h
 
 ## Live Demo
 
-Give a try the [*beta* live demo](http://demo.timegrid.io/)
+[Test drive the *beta* live demo](http://demo.timegrid.io)
 
 > **ADVICE:** I hate spam the same you do. Despite demo does not currently send emails, you may use a [maildrop.cc](http://maildrop.cc/) fake account for testing.
 
 ## Features
 
-  * User classic and oAuth2 Sign-in/Sign-up with [Socialite](https://github.com/laravel/socialite)
+  * Classic and oAuth2 Sign-in/Sign-up with [Socialite](https://github.com/laravel/socialite)
   * Business management
-    * Contact addressbook
-    * Services management
-    * Staff management
+    * Addressbook
+    * Services
+    * Staff
     * Availability management
-    * Appointment schedule view
-    * Appointment calendar view with [fullcalendar](https://github.com/fullcalendar)
-    * Basic search
-  * Self-service appointment reservation with datepicker
+    * Appointments
+  * Scheduling view with [fullcalendar](https://github.com/fullcalendar)
+  * Self-service reservation with datepicker
   * Basic email notifications
-  * Multiple Languages Support (Localization)
+  * i18n Support
   * Multiple Timezones Support
-  * Simple live chat support with [TidioChat](https://www.tidiochat.com/)
-  * GUI with [AdminLTE](https://github.com/almasaeed2010/AdminLTE) [Twitter Bootstrap 3](https://github.com/twbs/bootstrap) based theme.
+  * Live chat with [TidioChat](https://www.tidiochat.com/)
+  * Admin GUI with [AdminLTE](https://github.com/almasaeed2010/AdminLTE) [Twitter Bootstrap 3](https://github.com/twbs/bootstrap) based theme.
 
-For future features check [issues](https://github.com/timegridio/timegrid/issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request)
+[Future features here](https://github.com/timegridio/timegrid/issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request)
 
 ## Installing
 
 [Read the INSTALLING section](INSTALLING.md)
 
-## Development
+## Contributing
 
-  * [Frequently Asked Questions](https://github.com/timegridio/timegrid/wiki/FAQ)
-  * [Troubleshooting](https://timegrid.slack.com/messages/general/)
-  * [Contributing](CONTRIBUTING.md)
-  * [Roadmap](https://trello.com/b/VNFqnxhc/timegrid-io-dev)
-  * [Developer Documentation](http://timegrid-doc-dev.readthedocs.org/en/latest/?badge=latest)
+To get a dedicated introduction to *timegrid* and joining the development community...
+
+[![Reserve Your Seat](http://i.imgur.com/pgkEz87.png)](https://timegrid.io/dev)
+
+Or just [jump in our Trello board](https://trello.com/b/VNFqnxhc/timegrid-io-dev)
 
 ## Author
 
