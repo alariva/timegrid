@@ -41,7 +41,7 @@ class BusinessVacancyController extends Controller
      */
     public function create(Business $business)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageVacancies', $business);
@@ -100,7 +100,7 @@ class BusinessVacancyController extends Controller
      */
     public function store(Business $business, Request $request)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageVacancies', $business);
@@ -158,7 +158,7 @@ class BusinessVacancyController extends Controller
      */
     public function storeBatch(Business $business, Request $request, VacancyParser $vacancyParser)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageVacancies', $business);
@@ -206,7 +206,7 @@ class BusinessVacancyController extends Controller
      */
     public function show(Business $business)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageVacancies', $business);
@@ -235,7 +235,7 @@ class BusinessVacancyController extends Controller
 
     public function update(Business $business, Request $request, VacancyParser $vacancyParser)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageVacancies', $business);
@@ -259,8 +259,7 @@ class BusinessVacancyController extends Controller
 
         $this->concierge->business($business);
 
-        if($vacanciesToWipe = $business->vacancies()->where(['service_id' => $service->id]))
-        {
+        if ($vacanciesToWipe = $business->vacancies()->where(['service_id' => $service->id])) {
             $vacanciesToWipe->delete();
         }
 
@@ -273,10 +272,6 @@ class BusinessVacancyController extends Controller
 
     protected function buildStatements(Service $service, HumanResource $humanResource, $weekdays, $startAt, $finishAt, $timezone)
     {
-        if(!$weekdays){
-            return '';
-        }
-
         $out = [];
 
         $out[] = "{$service->slug}:{$humanResource->slug}";

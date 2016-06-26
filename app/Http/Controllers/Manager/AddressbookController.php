@@ -19,7 +19,7 @@ class AddressbookController extends Controller
      */
     public function index(Business $business)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageContacts', $business);
@@ -39,7 +39,7 @@ class AddressbookController extends Controller
      */
     public function create(Business $business, ContactFormRequest $request)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageContacts', $business);
@@ -61,7 +61,7 @@ class AddressbookController extends Controller
      */
     public function store(Business $business, ContactFormRequest $request)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s', $business->id));
 
         $this->authorize('manageContacts', $business);
@@ -69,12 +69,6 @@ class AddressbookController extends Controller
         // BEGIN //
 
         $contact = $business->addressbook()->register($request->all());
-
-        if (!$contact) {
-            flash()->error(trans('manager.contacts.msg.store.error'));
-
-            return redirect()->route('manager.addressbook.index', [$business]);
-        }
 
         if (!$contact->wasRecentlyCreated) {
             flash()->warning(trans('manager.contacts.msg.store.warning_showing_existing_contact'));
@@ -100,7 +94,7 @@ class AddressbookController extends Controller
      */
     public function show(Business $business, Contact $contact)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manageContacts', $business);
@@ -121,7 +115,7 @@ class AddressbookController extends Controller
      */
     public function edit(Business $business, Contact $contact)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manageContacts', $business);
@@ -146,7 +140,7 @@ class AddressbookController extends Controller
      */
     public function update(Business $business, Contact $contact, ContactFormRequest $request)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manageContacts', $business);
@@ -184,7 +178,7 @@ class AddressbookController extends Controller
      */
     public function destroy(Business $business, Contact $contact)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manageContacts', $business);

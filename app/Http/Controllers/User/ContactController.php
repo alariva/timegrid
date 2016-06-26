@@ -22,7 +22,7 @@ class ContactController extends Controller
      */
     public function create(Business $business)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
 
         $user = auth()->user();
 
@@ -31,7 +31,7 @@ class ContactController extends Controller
 
         // Search existing subscribed email in same business
         if (!$existingContact) {
-            $existingContact = $business->addressbook()->reuseExisting($user->email);
+            $existingContact = $business->addressbook()->getSubscribed($user->email);
         }
 
         // Search existing any authenticated profile for user
@@ -64,7 +64,7 @@ class ContactController extends Controller
      */
     public function store(Business $business, AlterContactRequest $request)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
 
         // BEGIN
 
@@ -76,7 +76,7 @@ class ContactController extends Controller
                    ->extra(compact('businessName'))
                    ->send();
 
-#        $existingContact = $business->addressbook()->reuseExisting($request->input('email'));
+#        $existingContact = $business->addressbook()->getSubscribed($request->input('email'));
 #
 #        if ($existingContact) {
 #            $existingContact->linktToUserId(auth()->id());
@@ -108,7 +108,7 @@ class ContactController extends Controller
      */
     public function show(Business $business, Contact $contact)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manage', $contact);
@@ -133,7 +133,7 @@ class ContactController extends Controller
      */
     public function edit(Business $business, Contact $contact)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manage', $contact);
@@ -154,7 +154,7 @@ class ContactController extends Controller
      */
     public function update(Business $business, Contact $contact, AlterContactRequest $request)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manage', $contact);
@@ -189,7 +189,7 @@ class ContactController extends Controller
      */
     public function destroy(Business $business, Contact $contact)
     {
-        logger()->info(__METHOD__);
+        logger()->info(__CLASS__.':'.__METHOD__);
         logger()->info(sprintf('businessId:%s contactId:%s', $business->id, $contact->id));
 
         $this->authorize('manage', $contact);
