@@ -90,8 +90,8 @@ class UserAgendaControllerTest extends TestCase
 
         $this->visit('/')->click('My Reservations');
 
-        $this->dontSee('Reserved')
-             ->dontSee($appointment->code)
+        $this->see('You have no ongoing reservations')
+             ->dontSee('Reserved')
              ->dontSee($appointment->business->name);
     }
 
@@ -223,6 +223,37 @@ class UserAgendaControllerTest extends TestCase
         $business->vacancies()->save($this->vacancy);
 
         $this->visit(route('user.booking.book', ['business' => $business]));
+
+        $this->see('Select a service to reserve')
+             ->see($service->name)
+             ->see('Confirm');
+    }
+
+    /**
+     * @test
+     */
+    public function it_queries_vacancies_on_behalf_of_a_contact()
+    {
+        $owner = $this->createUser();
+        $user = $this->createUser();
+
+        $business = $this->createBusiness(['name' => 'tosto this tosti']);
+        $business->owners()->save($owner);
+
+        $contact = $this->makeContact($user);
+
+        $business->contacts()->save($contact);
+
+        $service = $this->makeService();
+        $business->services()->save($service);
+
+        $this->vacancy = $this->makeVacancy();
+        $this->vacancy->service()->associate($service);
+        $business->vacancies()->save($this->vacancy);
+        
+        $this->actingAs($owner);
+
+        $this->visit(route('user.booking.book', ['business' => $business, 'behalfOfId' => $contact->id]));
 
         $this->see('Select a service to reserve')
              ->see($service->name)
