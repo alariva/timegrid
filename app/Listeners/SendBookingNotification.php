@@ -24,7 +24,7 @@ class SendBookingNotification
      */
     public function handle(NewAppointmentWasBooked $event)
     {
-        logger()->info('Handle NewAppointmentWasBooked.SendBookingNotification()');
+        logger()->info(__CLASS__.':'.__METHOD__);
 
         $code = $event->appointment->code;
         $date = $event->appointment->start_at->toDateString();
@@ -55,6 +55,7 @@ class SendBookingNotification
         $params = [
             'user'        => $user,
             'appointment' => $event->appointment,
+            'userName'    => $event->appointment->contact->firstname,
         ];
         $header = [
             'name'  => $user->name,
@@ -65,8 +66,8 @@ class SendBookingNotification
             'params'   => $params,
             'locale'   => $event->appointment->business->locale,
             'timezone' => $user->pref('timezone'),
-            'template' => 'appointments.user._new',
-            'subject'  => 'user.appointment.reserved.subject',
+            'template' => 'user.appointment-notification.notification',
+            'subject'  => 'user.appointment-notification.subject',
         ];
         $this->sendemail($email);
     }
@@ -76,6 +77,7 @@ class SendBookingNotification
         $params = [
             'user'        => $event->appointment->business->owner(),
             'appointment' => $event->appointment,
+            'ownerName'   => $event->appointment->business->owner()->name,
         ];
         $header = [
             'name'  => $event->appointment->business->owner()->name,
@@ -86,8 +88,8 @@ class SendBookingNotification
             'params'   => $params,
             'locale'   => $event->appointment->business->locale,
             'timezone' => $event->appointment->business->owner()->pref('timezone'),
-            'template' => 'appointments.manager._new',
-            'subject'  => 'manager.appointment.reserved.subject',
+            'template' => 'manager.appointment-notification.notification',
+            'subject'  => 'manager.appointment-notification.subject',
         ];
         $this->sendemail($email);
     }
