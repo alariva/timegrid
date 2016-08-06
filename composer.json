@@ -52,7 +52,8 @@
         "timegridio/concierge": "dev-master",
         "jenssegers/rollbar": "^1.5",
         "eluceo/ical": "^0.10.1",
-        "snowfire/beautymail": "dev-master"
+        "snowfire/beautymail": "dev-master",
+        "timegridio/icalreader": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.0",
@@ -66,15 +67,14 @@
         "symfony/dom-crawler": "~3.0",
         "mockery/mockery": "0.9.*",
         "potsky/laravel-localization-helpers": "2.3.3",
-        "tightenco/mailthief": "^0.1.0"
+        "tightenco/mailthief": "^0.2"
     },
     "autoload": {
         "classmap": [
             "database"
         ],
         "psr-4": {
-            "App\\": "app/",
-            "Bootstrap\\": "bootstrap/"
+            "App\\": "app/"
         },
         "files": [
             "app/Http/helpers.php"

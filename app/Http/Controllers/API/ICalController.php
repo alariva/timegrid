@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Manager;
+namespace App\Http\Controllers\API;
 
 use App\BusinessToken;
 use App\Http\Controllers\Controller;
 use Eluceo\iCal\Component\Calendar;
 use Eluceo\iCal\Component\Event;
 use Timegridio\Concierge\Models\Business;
+use Validator;
 
 class ICalController extends Controller
 {
@@ -14,9 +15,13 @@ class ICalController extends Controller
     {
         logger()->info(__METHOD__);
 
-        $businessToken = new BusinessToken($business);
+        $validToken = with(new BusinessToken($business))->generate();
 
-        if ($businessToken->generate() !== $token) {
+        $validator = Validator::make(compact('token'), [
+            'token' => "bail|required|alpha_num|max:32|in:{$validToken}",
+        ]);
+
+        if ($validator->fails()) {
             abort(403);
         }
 
@@ -60,6 +65,10 @@ class ICalController extends Controller
             $vEvent->setDtStart($startAt);
             $vEvent->setDtEnd($endAt);
 
+            $vEvent->setStatus($this->mapStatus($appointment->status));
+
+            $vEvent->setUniqueId($appointment->business->slug.':'.$appointment->code.'@timegrid.io');
+
             $summary = $appointment->contact->firstname.'/'.
                        $appointment->service->name.'@'.
                        $appointment->business->slug.
@@ -75,5 +84,21 @@ class ICalController extends Controller
         }
 
         return $events;
+    }
+
+    /**
+     * Map Timegridio\Concierge\Models\Appointment status into
+     * Eluceo\iCal\Component\Event for ICal status compatibility
+     */
+    protected function mapStatus($status)
+    {
+        $mapping = [
+            'R' => 'TENTATIVE',
+            'C' => 'CONFIRMED',
+            'A' => 'CANCELLED',
+            'S' => 'CONFIRMED',
+        ];
+
+        return array_get($mapping, $status, 'TENTATIVE');
     }
 }
